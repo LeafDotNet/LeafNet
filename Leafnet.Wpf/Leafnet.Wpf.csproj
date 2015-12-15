@@ -127,6 +127,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Index.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="leaflet\images\layers-2x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

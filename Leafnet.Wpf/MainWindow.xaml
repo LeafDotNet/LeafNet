@@ -3,12 +3,11 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Leafnet.Wpf"
         xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid>
     <wpf:ChromiumWebBrowser Grid.Row="0"
-        Address="https://github.com/cefsharp/CefSharp/wiki/Frequently-asked-questions" />
+        Address="/Index.html" />
   </Grid>
 </Window>
