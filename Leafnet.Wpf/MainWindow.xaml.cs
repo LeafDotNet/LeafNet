@@ -9,9 +9,7 @@ namespace Leafnet.Wpf
     {
       InitializeComponent();
 
-      var resourceFactory = browser.ResourceHandlerFactory;
-
-      resourceFactory.GetResourceHandler(browser.WebBrowser, browser.GetBrowser(), browser.GetMainFrame(), null);
+      browser.Address = "custom://web/index.html";
     }
   }
 }

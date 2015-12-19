@@ -79,6 +79,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="StringExtensions.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -129,31 +130,31 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Index.html">
+    <Content Include="Web\index.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\images\layers-2x.png">
+    <Content Include="Web\leaflet\images\layers-2x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\images\layers.png">
+    <Content Include="Web\leaflet\images\layers.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\images\marker-icon-2x.png">
+    <Content Include="Web\leaflet\images\marker-icon-2x.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\images\marker-icon.png">
+    <Content Include="Web\leaflet\images\marker-icon.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\images\marker-shadow.png">
+    <Content Include="Web\leaflet\images\marker-shadow.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\leaflet-src.js">
+    <Content Include="Web\leaflet\leaflet-src.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\leaflet.css">
+    <Content Include="Web\leaflet\leaflet.css">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="leaflet\leaflet.js">
+    <Content Include="Web\leaflet\leaflet.js">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

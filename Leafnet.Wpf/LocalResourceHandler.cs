@@ -14,15 +14,16 @@ namespace Leafnet.Wpf
 
     public bool ProcessRequestAsync(IRequest request, ICallback callback)
     {
-      // The 'host' portion is entirely ignored by this scheme handler.
       var uri = new Uri(request.Url);
-      var fileName = uri.AbsolutePath;
+      var fileName = request.Url.TrimStart(LocalSchemeHandlerFactory.SchemeName + "://");
 
       Task.Run(() =>
         {
           using (callback)
           {
-            var bytes = Encoding.UTF8.GetBytes(fileName);
+            var fileAsString = File.ReadAllText(fileName);
+
+            var bytes = Encoding.UTF8.GetBytes(fileAsString);
             stream = new MemoryStream(bytes);
 
             var fileExtension = Path.GetExtension(fileName);
