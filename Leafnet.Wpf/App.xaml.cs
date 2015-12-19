@@ -12,6 +12,9 @@ namespace Leafnet.Wpf
         SchemeName = LocalSchemeHandlerFactory.SchemeName,
         SchemeHandlerFactory = new LocalSchemeHandlerFactory()
       });
+
+      settings.SetOffScreenRenderingBestPerformanceArgs();
+
       Cef.Initialize(settings);
     }
   }
