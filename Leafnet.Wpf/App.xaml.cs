@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using CefSharp;
 
 namespace Leafnet.Wpf
 {
-  /// <summary>
-  /// Interaction logic for App.xaml
-  /// </summary>
-  public partial class App : Application
+  public partial class App
   {
+    public App()
+    {
+      var settings = new CefSettings();
+      settings.RegisterScheme(new CefCustomScheme
+      {
+        SchemeName = LocalSchemeHandlerFactory.SchemeName,
+        SchemeHandlerFactory = new LocalSchemeHandlerFactory()
+      });
+      Cef.Initialize(settings);
+    }
   }
 }
