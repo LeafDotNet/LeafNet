@@ -1,33 +1,34 @@
-﻿using System.Threading.Tasks;
+﻿using System;
 using CefSharp;
-using System;
 
 namespace Leafnet.Wpf
 {
   public partial class MainWindow
   {
+    public const string Address = "custom://web/index.html";
+
     public MainWindow()
     {
       InitializeComponent();
 
-      browser.Address = "custom://web/index.html";
-      browser.IsBrowserInitializedChanged += OnBrowserInitializedChanged;
+      Closing += OnClosing;
+      browser.Address = Address;
+      browser.FrameLoadEnd += OnFrameLoadEnd;
     }
 
-    private void OnBrowserInitializedChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+    private void OnClosing(object sender, System.ComponentModel.CancelEventArgs e)
     {
-      if (browser.IsBrowserInitialized)
-      {
-        LoadMap();
-        //browser.ShowDevTools();
-      }
+      browser.FrameLoadEnd -= OnFrameLoadEnd;
+      browser.Dispose();
     }
 
-    public async void LoadMap()
+    private void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
     {
-      var s2 = "alert(document.body.style.backgroundColor)";
-      //var script = "L.map('map').setView([51.505, -0.09], 13);";
-      browser.ExecuteScriptAsync(s2);
+      if (!string.Equals(Address, e.Url, StringComparison.InvariantCultureIgnoreCase))
+        return;
+
+      browser.LoadMapAtLocationAndZoom(47.6097, -122.3331);
+      browser.LoadTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
     }
   }
 }
