@@ -22,13 +22,18 @@ namespace Leafnet.Wpf
       browser.Dispose();
     }
 
-    private void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
+    private async void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
     {
       if (!string.Equals(Address, e.Url, StringComparison.InvariantCultureIgnoreCase))
         return;
 
       browser.LoadMapAtLocationAndZoom(47.6097, -122.3331);
       browser.LoadTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+
+      var l1 = await LatLng.New(browser, 47.6097, -122.3331);
+      var l2 = await LatLng.New(browser, 47.0097, -122.3331);
+
+      var d = l1.DistanceTo(l2);
     }
   }
 }
