@@ -27,13 +27,16 @@ namespace Leafnet.Wpf
       if (!string.Equals(Address, e.Url, StringComparison.InvariantCultureIgnoreCase))
         return;
 
+      Script.Initialize(browser);
+
       browser.LoadMapAtLocationAndZoom(47.6097, -122.3331);
       browser.LoadTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
 
-      var l1 = await LatLng.New(browser, 47.6097, -122.3331);
-      var l2 = await LatLng.New(browser, 47.0097, -122.3331);
+      var l1 = new LatLng(47.6097, -122.3331);
+      var l2 = new LatLng(47.5097, -122.3331);
 
-      var d = l1.DistanceTo(l2);
+      var distance = await l1.DistanceTo(l2);
+      var equals = l1.Equals(l2);
     }
   }
 }

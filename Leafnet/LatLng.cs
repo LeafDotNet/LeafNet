@@ -1,37 +1,34 @@
-﻿using CefSharp.Wpf;
-using System;
-using CefSharp;
+﻿using System;
 using System.Threading.Tasks;
-using Newtonsoft.Json.Linq;
 
 namespace Leafnet
 {
   public class LatLng
   {
-    readonly JObject js;
-    private LatLng(JObject js)
+    internal readonly string Js;
+    public LatLng(double lat, double lon)
     {
-      this.js = js;
+      Js = JsVariableNamer.GetNext();
+      var script = string.Format("var {0} = L.latLng({1}, {2})", Js, lat, lon);
+      Script.ExecuteAsync(script);
     }
 
-    public static async Task<LatLng> New(ChromiumWebBrowser browser, double lat, double lon)
+    public async Task<double> DistanceTo(LatLng other)
     {
-      var script = string.Format("var latLng = L.latLng({0}, {1}); JSON.stringify(latLng);", lat, lon);
-      var response = await browser.EvaluateScriptAsync(script);
-      var js = JObject.FromObject(response.Result);
-      return new LatLng(js);
-    }
-
-    public async Task<double> DistanceTo(LatLng otherLatLng)
-    {
-      var script = js["distanceTo"];
-
-      return 0;
+      var script = string.Format("{0}.distanceTo({1})", Js, other.Js);
+      var result = await Script.EvaluateAsync<double?>(script);
+      return result ?? 0;
     }
 
     public override bool Equals(object obj)
     {
-      throw new NotImplementedException();
+      var other = obj as LatLng;
+      if (other == null)
+        return false;
+
+      var script = string.Format("{0}.equals({1})", Js, other.Js);
+      var result = Script.EvaluateAsync<bool?>(script).Result;
+      return result ?? false;
     }
 
     public override int GetHashCode()

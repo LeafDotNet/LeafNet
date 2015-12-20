@@ -70,6 +70,8 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Script.cs" />
+    <Compile Include="JsVariableNamer.cs" />
     <Compile Include="LatLng.cs" />
     <Compile Include="Map.cs" />
     <Compile Include="MapOptions.cs" />
