@@ -6,16 +6,18 @@ namespace Leafnet
   public class LatLng
   {
     internal readonly string Js;
-    public LatLng(double lat, double lon)
+    public LatLng(double lat, double lng)
     {
       Js = JsVariableNamer.GetNext();
-      var script = string.Format("var {0} = L.latLng({1}, {2})", Js, lat, lon);
+      Lat = lat;
+      Lng = lng;
+      var script = $"var {Js} = L.latLng({lat}, {lng})";
       Script.ExecuteAsync(script);
     }
 
     public async Task<double> DistanceTo(LatLng other)
     {
-      var script = string.Format("{0}.distanceTo({1})", Js, other.Js);
+      var script = $"{Js}.distanceTo({other.Js})";
       var result = await Script.EvaluateAsync<double?>(script);
       return result ?? 0;
     }
@@ -26,24 +28,19 @@ namespace Leafnet
       if (other == null)
         return false;
 
-      var script = string.Format("{0}.equals({1})", Js, other.Js);
-      var result = Script.EvaluateAsync<bool?>(script).Result;
-      return result ?? false;
+      var margin = Math.Max(
+            Math.Abs(Lat - other.Lat),
+            Math.Abs(Lng - other.Lng));
+
+      return margin <= 1.0E-9;
     }
 
     public override int GetHashCode()
     {
-      return base.GetHashCode();
+      return Lat.GetHashCode() + Lng.GetHashCode();
     }
 
-    public override string ToString()
-    {
-      return base.ToString();
-    }
-
-    public LatLng Wrap(double left, double right)
-    {
-      throw new NotImplementedException();
-    }
+    public double Lat { get; }
+    public double Lng { get; }
   }
 }
