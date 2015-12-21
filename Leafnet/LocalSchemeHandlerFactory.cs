@@ -1,8 +1,8 @@
 ﻿using CefSharp;
 
-namespace Leafnet.Wpf
+namespace Leafnet
 {
-  internal class LocalSchemeHandlerFactory : ISchemeHandlerFactory
+  public class LocalSchemeHandlerFactory : ISchemeHandlerFactory
   {
     public const string SchemeName = "custom";
 
