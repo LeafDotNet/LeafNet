@@ -7,7 +7,7 @@ namespace Leafnet
 {
   public static class Script
   {
-    static ChromiumWebBrowser webBrowser = null;
+    static ChromiumWebBrowser webBrowser;
 
     public static void Initialize(ChromiumWebBrowser browser)
     {

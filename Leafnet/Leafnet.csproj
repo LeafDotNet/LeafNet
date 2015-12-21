@@ -70,6 +70,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LatLngBounds.cs" />
     <Compile Include="Script.cs" />
     <Compile Include="JsVariableNamer.cs" />
     <Compile Include="LatLng.cs" />
