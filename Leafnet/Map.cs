@@ -1,5 +1,4 @@
-﻿
-namespace Leafnet
+﻿namespace Leafnet
 {
   public class Map
   {
