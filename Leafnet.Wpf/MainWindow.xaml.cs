@@ -22,21 +22,16 @@ namespace Leafnet.Wpf
       browser.Dispose();
     }
 
-    private async void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
+    private void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
     {
       if (!string.Equals(Address, e.Url, StringComparison.InvariantCultureIgnoreCase))
         return;
 
-      Script.Initialize(browser);
+      Script.Initialize(browser.ExecuteScriptAsync, s => browser.EvaluateScriptAsync(s));
 
-      browser.LoadMapAtLocationAndZoom(47.6097, -122.3331);
-      browser.LoadTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
-
-      var l1 = new LatLng(47.6097, -122.3331);
-      var l2 = new LatLng(47.5097, -122.3331);
-
-      var distance = await l1.DistanceTo(l2);
-      var equals = l1.Equals(l2);
+      var map = new Map("map")
+        .SetView(new LatLng(47.6097, -122.3331))
+        .AddTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
     }
   }
 }

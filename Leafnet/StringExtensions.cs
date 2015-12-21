@@ -1,4 +1,4 @@
-﻿namespace Leafnet.Wpf
+﻿namespace Leafnet
 {
   public static class StringExtensions
   {

@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CefSharp;
 
-namespace Leafnet.Wpf
+namespace Leafnet
 {
   public class LocalResourceHandler : IResourceHandler
   {

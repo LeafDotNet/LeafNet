@@ -1,33 +1,36 @@
 ﻿using System;
 using System.Threading.Tasks;
 using CefSharp;
-using CefSharp.Wpf;
 
 namespace Leafnet
 {
   public static class Script
   {
-    static ChromiumWebBrowser webBrowser;
+    static Action<string> executeAsync;
+    static Func<string, Task<JavascriptResponse>> evaluateAsync; 
 
-    public static void Initialize(ChromiumWebBrowser browser)
+    public static void Initialize(
+      Action<string> executeScriptAsync, 
+      Func<string, Task<JavascriptResponse>> evaluateScriptAsync)
     {
-      webBrowser = browser;
+      executeAsync = executeScriptAsync;
+      evaluateAsync = evaluateScriptAsync;
     }
 
     public static void ExecuteAsync(string script)
     {
-      if (webBrowser == null)
+      if (executeAsync == null)
         throw new NullReferenceException("webBrowser");
 
-      webBrowser.ExecuteScriptAsync(script);
+      executeAsync(script);
     }
 
     public static async Task<T> EvaluateAsync<T>(string script)
     {
-      if (webBrowser == null)
+      if (evaluateAsync == null)
         throw new NullReferenceException("webBrowser");
 
-      var response = await webBrowser.EvaluateScriptAsync(script);
+      var response = await evaluateAsync(script);
       if (response.Result == null)
         return default(T);
 
