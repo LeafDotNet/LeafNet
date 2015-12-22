@@ -32,6 +32,9 @@ namespace Leafnet.Wpf
       var map = new Map("map")
         .SetView(new LatLng(47.6097, -122.3331))
         .AddTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
+
+      var marker = new Marker(new LatLng(47.6097, -122.3331));
+      map.AddMarker(marker);
     }
   }
 }
