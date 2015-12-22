@@ -1,18 +1,19 @@
 ﻿using System;
 using CefSharp;
+using System.IO;
 
 namespace Leafnet.Wpf
 {
   public partial class MainWindow
   {
-    public const string Address = "custom://web/index.html";
+    public const string Address = "Web//index.html";
 
     public MainWindow()
     {
       InitializeComponent();
 
       Closing += OnClosing;
-      browser.Address = Address;
+      browser.Address = Path.GetFullPath(Address);
       browser.FrameLoadEnd += OnFrameLoadEnd;
     }
 
@@ -24,9 +25,6 @@ namespace Leafnet.Wpf
 
     private void OnFrameLoadEnd(object _, FrameLoadEndEventArgs e)
     {
-      if (!string.Equals(Address, e.Url, StringComparison.InvariantCultureIgnoreCase))
-        return;
-
       Script.Initialize(browser.ExecuteScriptAsync, s => browser.EvaluateScriptAsync(s));
 
       var map = new Map("map")
@@ -34,7 +32,7 @@ namespace Leafnet.Wpf
         .AddTileLayer(@"http://{s}.tile.osm.org/{z}/{x}/{y}.png");
 
       var marker = new Marker(new LatLng(47.6097, -122.3331));
-      map.AddMarker(marker);
+      marker.addTo(map);
     }
   }
 }
