@@ -33,5 +33,10 @@ namespace Leafnet
       Script.ExecuteAsync(script);
       return this;
     }
+
+    public Map AddMarker(Marker marker)
+    {
+      
+    }
   }
 }
