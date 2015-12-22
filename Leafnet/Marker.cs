@@ -11,7 +11,7 @@ namespace Leafnet
       this.options = markerOptions;
     }
 
-    public Marker addTo(Map map)
+    public Marker AddTo(Map map)
     {
       var latLngJson = JsonConvert.SerializeObject(latLng);
       var markerOptionsJson = options == null
