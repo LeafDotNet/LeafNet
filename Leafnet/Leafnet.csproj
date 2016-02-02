@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Icon.cs" />
+    <Compile Include="L.cs" />
     <Compile Include="LatLngBounds.cs" />
     <Compile Include="Marker.cs" />
     <Compile Include="Options.cs" />
