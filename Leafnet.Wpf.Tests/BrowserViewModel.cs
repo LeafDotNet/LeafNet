@@ -44,12 +44,12 @@ namespace Leafnet.Wpf.Tests
     {
       Script.Initialize( _webBrowser.ExecuteScriptAsync, s => _webBrowser.EvaluateScriptAsync( s ) );
 
-      var map = new Map( "map" )
-        .SetView( new LatLng( 47.6097, -122.3331 ) )
-        .AddTileLayer( @"http://{s}.tile.osm.org/{z}/{x}/{y}.png" );
-
-      var marker = new Marker( new LatLng( 47.6097, -122.3331 ) );
-      marker.AddTo( map );      
+//      var map = new Map( "map" )
+//        .SetView( new LatLng( 47.6097, -122.3331 ) )
+//        .AddTileLayer( @"http://{s}.tile.osm.org/{z}/{x}/{y}.png" );
+//
+//      var marker = new Marker( new LatLng( 47.6097, -122.3331 ) );
+//      marker.AddTo( map );      
     }
 
     public ICommand ShowDevMode { get; set; }

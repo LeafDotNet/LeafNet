@@ -25,21 +25,27 @@ namespace Leafnet.Wpf.Tests
       Add( "L.version", "0.7.7" );
       Add( "map = L.map('map')", null );
       Add( "map.options.dragging", "True" );
+      Add( "map.setView([51.505, -0.09], 13);", null );
+      Add( "map.getZoom();", "13" );
+      Add( "map.getBounds().contains([51.505, -0.09]);", "True" );
+      Add( "tileLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {\"maxZoom\":10})", null );
+      Add( "tileLayer.options.maxZoom", "10");
+      Add( "tileLayer.addTo(map);", null );
+      Add( "tileLayer._url", null );
     }
 
     public async void RunUnitTests()
     {
       foreach ( var unitTest in UnitTests )
       {
-        var script = _browser.EvaluateScriptAsync( unitTest.JavaScript );
-        await script;
+        var script = await _browser.EvaluateScriptAsync( unitTest.JavaScript );
         _dispatcher.Invoke( () =>
         {
-          if ( !script.Result.Success )
+          if ( !script.Success )
             unitTest.Passed = PassState.Failed;
           else
           {
-            unitTest.ActualResult = script.Result?.Result?.ToString();
+            unitTest.ActualResult = script.Result?.ToString();
             unitTest.Passed = unitTest.ActualResult == unitTest.ExpectedResult ? PassState.Passed :  PassState.Failed;
           }
         } );

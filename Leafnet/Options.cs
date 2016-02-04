@@ -21,29 +21,6 @@
     bool animate;
   }
 
-  public class TileLayerOptions
-  {
-    public int minZoom;
-    public int maxZoom;
-    public double maxNativeZoom;
-    public double tileSize;
-    public string[] subdomains;
-    public string errorTileUrl;
-    public string attribution;
-    public bool tms;
-    public bool continuousWorld;
-    public bool noWrap;
-    public int zoomOffset;
-    public bool zoomReverse;
-    public double opacity;
-    public int zIndex;
-    public bool unloadInvisibleTiles;
-    public bool updateWhenIdle;
-    public bool detectRetina;
-    public bool reuseTiles;
-    public LatLngBounds bounds;
-  }
-
   public class IconOptions
   {
 

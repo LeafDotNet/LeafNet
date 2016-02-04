@@ -1,37 +1,24 @@
-﻿using Newtonsoft.Json;
+﻿using System.Threading.Tasks;
+using CefSharp;
+using Newtonsoft.Json;
 
 namespace Leafnet
 {
-  public class Map
+  public class Map : JsObject
   {
-    internal readonly string Js = JsVariableNamer.GetNext();
-    public Map(string divId, string options = "")
+    public Map(string jsName, IWebBrowser browser, string divId) :
+      base (jsName, browser)
     {
-      var script = $"var {Js} = L.map('{divId}')";
-      Script.ExecuteAsync(script);
+      DivId = divId;
     }
 
-    public Map SetView(LatLng center, int zoom = 8, ZoomPanOptions zoomPanOptions = null)
+    public async Task<Map> RemoveLayer( TileLayer layer)
     {
-      var centerJson = JsonConvert.SerializeObject(center);
-
-      var zoomPanOptionsJson = zoomPanOptions == null
-        ? "{}" : JsonConvert.SerializeObject(zoomPanOptions);
-
-      var script = $"{Js}.setView({centerJson}, {zoom}, {zoomPanOptionsJson})";
-      Script.ExecuteAsync(script);
+      var js = $"{JsName}.removeLayer({layer.JsName});";
+      await Evaluate( js );
       return this;
-    }
+    } 
 
-    public Map AddTileLayer(string url, TileLayerOptions tileLayerOptions = null)
-    {
-      var tileLayerOptionsJson = tileLayerOptions == null
-        ? "{}" : JsonConvert.SerializeObject(tileLayerOptions);
-
-      var script =
-        $@"L.tileLayer('{url}', {tileLayerOptionsJson}).addTo({Js});";
-      Script.ExecuteAsync(script);
-      return this;
-    }
+    public string DivId { get; }
   }
 }
