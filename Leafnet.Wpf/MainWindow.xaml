@@ -6,7 +6,7 @@
         xmlns:wpf="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="600">
-    <Grid>
+  <Grid>
     <wpf:ChromiumWebBrowser x:Name="browser" />
   </Grid>
 </Window>

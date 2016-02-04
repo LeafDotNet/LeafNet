@@ -17,7 +17,7 @@ namespace Leafnet
       var markerOptionsJson = options == null
         ? "{}" : JsonConvert.SerializeObject(options);
 
-      var script = $"var {Js} = L.marker({latLngJson}, {markerOptionsJson}).addTo({map.Js})";
+      var script = $"var {Js} = L.marker({latLngJson}, {markerOptionsJson}).addTo({map.JsName})";
       Script.ExecuteAsync(script);
 
       return this;
