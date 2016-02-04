@@ -78,9 +78,16 @@ namespace Leafnet.Wpf
       var url = @"https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
       var tileLayer = await l.TileLayer( "tileLayer", url, new TileLayerOptions { id = "mapbox.streets" } );
       await tileLayer.AddToMap( map );
-      await tileLayer.SetOpacity( 0.1 );
-      await Task.Delay( 5000 );
-      await map.RemoveLayer( tileLayer );
+      await tileLayer.SetOpacity( 0.7 );
+      await Task.Delay( 2000 );
+
+      var task = map.RemoveLayerJs( tileLayer );
+      Console.WriteLine( task.Js );
+      await task.Run();
+      Console.WriteLine(  task.Response.Success == true );
+      var jsUnit = new JsUnitTest( browser, "map.removeLayer(tileLayer)", "map.hasLayer(tileLayer)", "False" );
+      await jsUnit.RunTest();
+      Console.WriteLine(  );
 
       //      l.Execute( "map.setView([51.505, -0.09], 13);" );
 
@@ -90,6 +97,52 @@ namespace Leafnet.Wpf
 
       //      var result = browser.EvaluateScriptAsync( script ).Result;
       //      var result = browser.EvaluateScriptAsync( "map = L.map('map');", TimeSpan.FromMilliseconds( 500 ) ).Result;
+    }
+
+    public enum TestStates
+    {
+      NotRunning,
+      Running,
+      Passed,
+      Failed
+    }
+
+    public class JsUnitTest
+    {
+      private readonly IWebBrowser _browser;
+      public string InputJs;
+      public string InputJsResult;
+
+      public string EvaluateJs;
+      public string ExpectedJavaScriptResult;
+      public string ActualJavaScriptResult { get; set; }
+
+      public TestStates InputState { get; set; }
+      public TestStates CheckState { get; set; }
+      
+
+      public JsUnitTest( IWebBrowser browser, string inputJs, string evaluateJs, string expectedJavaScriptResult )
+      {
+        _browser = browser;
+        InputJs = inputJs;
+        EvaluateJs = evaluateJs;
+        ExpectedJavaScriptResult = expectedJavaScriptResult;
+        InputState= TestStates.NotRunning;
+        CheckState = TestStates.NotRunning;
+      }
+
+      public async Task RunTest()
+      {
+        InputState = TestStates.Running;
+        var response = await _browser.EvaluateScriptAsync( InputJs );
+        InputState = response.Success ? TestStates.Passed : TestStates.Failed;
+        InputJsResult = response.Result?.ToString() ?? "";
+        if ( InputState == TestStates.Failed )
+          return;
+        var evalResponse = await _browser.EvaluateScriptAsync( EvaluateJs );        
+        ActualJavaScriptResult = evalResponse.Result?.ToString() ?? "";
+        CheckState = ActualJavaScriptResult == ExpectedJavaScriptResult ? TestStates.Passed : TestStates.Failed;
+      }
     }
   }
 }
