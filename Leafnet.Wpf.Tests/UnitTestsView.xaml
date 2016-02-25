@@ -6,7 +6,7 @@
              xmlns:local="clr-namespace:Leafnet.Wpf.Tests"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance local:UnitTestsViewModel}"
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="800">
   <DataGrid ItemsSource="{Binding UnitTests}" AutoGenerateColumns="False">
     <DataGrid.Columns>
       <DataGridTemplateColumn Header="JavaScript" >

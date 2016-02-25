@@ -23,6 +23,14 @@ namespace Leafnet.Tests
     }
 
     [Fact]
+    public void ClassEquals()
+    {
+      var t1 = new TileLayerOptions();
+      var t2 = new TileLayerOptions();
+      Assert.Equal( t1, t2 );
+    }
+
+    [Fact]
     public void TestTileLayerOptionsDefaultValue()
     {
       // currently jsonconvert does not respect array as default values

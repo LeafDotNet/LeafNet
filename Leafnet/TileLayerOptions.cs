@@ -5,7 +5,9 @@ using Newtonsoft.Json;
 
 namespace Leafnet
 {
-  
+  /// <summary>
+  /// http://leafletjs.com/reference.html#tilelayer-options
+  /// </summary>
   public class TileLayerOptions
   {
     public static TileLayerOptions Default = new TileLayerOptions();
@@ -27,8 +29,8 @@ namespace Leafnet
       zoomReverse = false;
       opacity = 1.0;
       zIndex = null;
-      unloadInvisibleTiles = true;
-      updateWhenIdle = true;
+      unloadInvisibleTiles = false;
+      updateWhenIdle = false;
       detectRetina = false;
       reuseTiles = false;
       bounds = null;
@@ -64,9 +66,9 @@ namespace Leafnet
     public double opacity { get; set; }
     [DefaultValue( null )]
     public int? zIndex { get; set; }
-    [DefaultValue( true )]
+    [DefaultValue( false )]
     public bool unloadInvisibleTiles { get; set; }
-    [DefaultValue( true )]
+    [DefaultValue( false )]
     public bool updateWhenIdle { get; set; }
     [DefaultValue( false )]
     public bool detectRetina { get; set; }

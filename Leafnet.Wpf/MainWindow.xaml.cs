@@ -66,12 +66,6 @@ namespace Leafnet.Wpf
 
     private async static void ThisNeedsToBeFiguredOut( IWebBrowser browser )
     {
-      //      var script = "map = L.map('map');";
-      // fails 
-//      var result = browser.EvaluateScriptAsync( "map = L.map('map');" ).Result;
-//        Console.WriteLine();
-//        Task<JavascriptResponse> result = browser.EvaluateScriptAsync( "map = L.map('map');" );
-//        result.ContinueWith( jsr => Console.WriteLine());
       var l = new L( browser );
       var map = await l.Map( "map", "map" );
       await l.Evaluate( "map.setView([51.505, -0.09], 13);" );
@@ -87,16 +81,6 @@ namespace Leafnet.Wpf
       Console.WriteLine(  task.Response.Success == true );
       var jsUnit = new JsUnitTest( browser, "map.removeLayer(tileLayer)", "map.hasLayer(tileLayer)", "False" );
       await jsUnit.RunTest();
-      Console.WriteLine(  );
-
-      //      l.Execute( "map.setView([51.505, -0.09], 13);" );
-
-      //      l.TileLayer("tileLayer", url, new TileLayerOptions { id = "mapbox.streets" }).AddToMap(map);
-
-      //      browser.ExecuteScriptAsync( $"L.tileLayer('{url}', {"{id: 'mapbox.streets'}"}).addTo(map);" );
-
-      //      var result = browser.EvaluateScriptAsync( script ).Result;
-      //      var result = browser.EvaluateScriptAsync( "map = L.map('map');", TimeSpan.FromMilliseconds( 500 ) ).Result;
     }
 
     public enum TestStates
