@@ -2,20 +2,20 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Leafnet.Wpf.Tests.MapTest"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:MapTest="clr-namespace:Leafnet.Wpf.Tests.MapTest"
              xmlns:UnitTests="clr-namespace:Leafnet.Wpf.Tests.MapTest.UnitTests"
              mc:Ignorable="d" 
-             d:DataContext="{d:DesignInstance local:JsUnitTestsViewModel}"
+             d:DataContext="{d:DesignInstance MapTest:JsUnitTestsViewModel}"
              d:DesignHeight="700" d:DesignWidth="1000">
   <UserControl.Resources>
       <Style TargetType="{x:Type Label}" x:Key="EnumLabel">
         <Setter Property="Content" Value="{Binding}"/>
         <Style.Triggers>
-          <DataTrigger Binding="{Binding}" Value="{x:Static local:TestStates.Passed}">
+          <DataTrigger Binding="{Binding}" Value="{x:Static UnitTests:TestStates.Passed}">
             <Setter Property="Background" Value="Green"/>
           </DataTrigger>
-          <DataTrigger Binding="{Binding}" Value="{x:Static local:TestStates.Failed}">
+          <DataTrigger Binding="{Binding}" Value="{x:Static UnitTests:TestStates.Failed}">
             <Setter Property="Background" Value="Red"/>
           </DataTrigger>
         </Style.Triggers>

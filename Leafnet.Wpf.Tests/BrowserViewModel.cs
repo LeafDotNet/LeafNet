@@ -1,14 +1,11 @@
 using System;
-using System.IO;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using CefSharp;
 using CefSharp.Wpf;
-using Leafnet.Wpf.Tests.Util;
+using ReactiveUI;
 
 namespace Leafnet.Wpf.Tests
 {
-  public class BrowserViewModel : ViewModel, IDisposable
+  public class BrowserViewModel : ReactiveObject, IDisposable
   {
     private IWpfWebBrowser _webBrowser;
     public const string Address = "Web//index.html";
@@ -16,8 +13,9 @@ namespace Leafnet.Wpf.Tests
 
     public BrowserViewModel()
     {
-      ShowDevMode = new DelegateCommand( () => _webBrowser?.ShowDevTools() );
-      
+      var command = ReactiveCommand.Create();
+      command.Subscribe( _ => _webBrowser?.ShowDevTools() );
+      ShowDevMode = command;
     }
 
     public void Dispose()
@@ -32,7 +30,7 @@ namespace Leafnet.Wpf.Tests
       get { return _webBrowser; }
       set
       {
-        if ( SetField( ref _webBrowser, value ) )
+        if ( this.RaiseAndSetIfChanged( ref _webBrowser, value ) != null )
         {
           L = new L( _webBrowser );
           _webBrowser.FrameLoadEnd += BrowserOnFrameLoadEnd;
@@ -52,6 +50,6 @@ namespace Leafnet.Wpf.Tests
 //      marker.AddTo( map );      
     }
 
-    public ICommand ShowDevMode { get; set; }
+    public IReactiveCommand ShowDevMode { get; set; }
   }
 }

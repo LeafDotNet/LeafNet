@@ -3,6 +3,7 @@ using System.Collections;
 using System.Reactive;
 using System.Threading.Tasks;
 using CefSharp;
+using Leafnet.Wpf.Tests.MapTest.UnitTests;
 using Newtonsoft.Json;
 using ReactiveUI;
 
