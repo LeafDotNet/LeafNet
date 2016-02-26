@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Leafnet.Wpf.Tests.MapTest"
+             xmlns:UnitTests="clr-namespace:Leafnet.Wpf.Tests.MapTest.UnitTests"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance local:JsUnitTestsViewModel}"
              d:DesignHeight="700" d:DesignWidth="1000">
@@ -20,34 +21,31 @@
         </Style.Triggers>
       </Style>
 
-    <DataTemplate DataType="{x:Type local:JsUnitTest}" x:Key="InputStateTemplate">
-        <Label DataContext="{Binding InputState}" Style="{StaticResource EnumLabel}"/>
-      </DataTemplate>
-    <DataTemplate DataType="{x:Type local:JsUnitTest}" x:Key="EvaluationStateTemplate">
-        <Label DataContext="{Binding EvalutionState}" Style="{StaticResource EnumLabel}"/>
-      </DataTemplate>
+    <DataTemplate DataType="{x:Type UnitTests:IJsUnitTest}" x:Key="StateTemplate">
+      <Label DataContext="{Binding State}" Style="{StaticResource EnumLabel}"/>
+    </DataTemplate>
   </UserControl.Resources>
   <Grid>
     <Grid.RowDefinitions>
       <RowDefinition Height="*"/>
       <RowDefinition Height="auto"/>
     </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition/>
+      <ColumnDefinition Width="300"/>
+    </Grid.ColumnDefinitions>
     <DataGrid  Margin="5"  AutoGenerateColumns="False" ItemsSource="{Binding Path=UnitTests}" 
                RenderOptions.ClearTypeHint="Enabled" Style="{DynamicResource AzureDataGrid}"
+               SelectedItem="{Binding SelectedTest}" Grid.Column="0"
     TextOptions.TextFormattingMode="Display" Grid.Row="0">
       <DataGrid.Columns>
-        <DataGridTemplateColumn CellTemplate="{StaticResource InputStateTemplate}" Header="Input State"/>
-        <DataGridTemplateColumn CellTemplate="{StaticResource EvaluationStateTemplate}" Header="Evaluation State"/>
+        <DataGridTemplateColumn CellTemplate="{StaticResource StateTemplate}" Header="Test State"/>
         <DataGridTextColumn Binding="{Binding Description}" Header="Description"/>
-        <DataGridTextColumn Binding="{Binding InputJs}" Header="Input Script"/>
-        <DataGridTextColumn Binding="{Binding InputJsResult}" Header="Input Script Result"/>
-        <DataGridTextColumn Binding="{Binding EvaluateJs}" Header="Evaluation Script"/>
-        <DataGridTextColumn Binding="{Binding ActualJavaScriptResult}" Header="Actual Evaluation Result"/>
-        <DataGridTextColumn Binding="{Binding ExpectedJavaScriptResult}" Header="Expected Evaluation Result"/>
       </DataGrid.Columns>
     </DataGrid>
     <Button Style="{DynamicResource AccentedSquareButtonStyle}" Height="40" Margin="10"
-            Content="Run Tests" Command="{Binding RunTests}" Grid.Row="1"/>
+            Content="Run Tests" Command="{Binding RunTests}" Grid.Row="1" Grid.Column="0"/>
+    <TextBox Text="{Binding SelectedTest.ActualJavaScriptResult}" Grid.Row="0" Grid.RowSpan="2" Grid.Column="1"/>
   </Grid>
 
 </UserControl>

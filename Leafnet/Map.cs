@@ -23,38 +23,13 @@ namespace Leafnet
       return this;
     }
 
-    public JsTask RemoveLayerJs( TileLayer layer )
+    public async Task<bool> HasLayer( TileLayer layer )
     {
-      var js = $"{JsName}.removeLayer({layer.JsName});";
-      return new JsTask( js, () => Browser.EvaluateScriptAsync( js) );
-    }
-
-
-    public async Task<Map> RemoveLayerJsd( TileLayer layer )
-    {
-      await RemoveLayerJs( layer ).Run();
-      return this;
+      var js = $"{JsName}.hasLayer({layer.JsName});";
+      var result = await Evaluate( js );
+      return (bool) result.Result;
     }
 
     public string DivId { get; }
   }  
-
-  public class JsTask
-  {
-    public string Js { get; }
-
-    public JavascriptResponse Response { get; set; }
-    private readonly Func<Task<JavascriptResponse>> _runJs;
-
-    public JsTask( string js, Func<Task<JavascriptResponse>> response )
-    {
-      Js = js;
-      _runJs = response;
-    }
-
-    public async Task<JavascriptResponse> Run()
-    {
-      return Response = await _runJs.Invoke();
-    }
-  }
 }

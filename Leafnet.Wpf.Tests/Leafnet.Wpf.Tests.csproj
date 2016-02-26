@@ -107,8 +107,10 @@
       <DependentUpon>JsUnitTestsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="MapTest\JsUnitTestsViewModel.cs" />
-    <Compile Include="MapTest\LeafnetActionUnitTest.cs" />
     <Compile Include="MapTest\TestStates.cs" />
+    <Compile Include="MapTest\UnitTests\IJsUnitTest.cs" />
+    <Compile Include="MapTest\UnitTests\JsFunctionTest.cs" />
+    <Compile Include="MapTest\UnitTests\LeafnetUnitTest.cs" />
     <Compile Include="PassState.cs" />
     <Compile Include="UnitTest.cs" />
     <Compile Include="UnitTestsView.xaml.cs">
