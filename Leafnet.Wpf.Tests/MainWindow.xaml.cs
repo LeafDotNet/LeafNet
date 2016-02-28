@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Leafnet.Wpf.Tests.MapTest;
+using Leafnet.Wpf.Tests.MapTest.FullTest;
 using Leafnet.Wpf.Tests.MapTest.UnitTests;
 using MahApps.Metro.Controls;
 using Newtonsoft.Json;
@@ -17,6 +18,13 @@ namespace Leafnet.Wpf.Tests
     public MainWindow()
     {
       InitializeComponent();
+
+      var test = new BasicMapTest();
+      Content = test.Control;
+      Task.Delay( 5000 ).ContinueWith( _ => test.RunTest.Execute(null) );
+      return;
+
+
       _browser.Address = Path.GetFullPath( "Web//index.html" );
 
       var viewmodel = new JsUnitTestsViewModel();
