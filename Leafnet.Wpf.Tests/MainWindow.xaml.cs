@@ -21,7 +21,8 @@ namespace Leafnet.Wpf.Tests
 
       var test = new BasicMapTest();
       Content = test.Control;
-      Task.Delay( 5000 ).ContinueWith( _ => test.RunTest.Execute(null) );
+      test.RunTest.Execute(null);
+      Task.Delay(10000).ContinueWith( _ => test.RunTest.Execute( null ));
       return;
 
 

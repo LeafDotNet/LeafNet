@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Concurrency;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,6 +20,9 @@ namespace Leafnet.Wpf.Tests.MapTest.FullTest
 {
   public abstract class FullTestBase : ReactiveObject, IFullTest
   {
+    private ChromiumWebBrowser _browser;
+    private IDisposable _disposal = Disposable.Empty;
+
     protected FullTestBase()
     {
       Control = new UserControl();
@@ -33,19 +37,22 @@ namespace Leafnet.Wpf.Tests.MapTest.FullTest
 
     private void Run(object o)
     {
+      _browser?.Dispose();
+      _disposal.Dispose();
+
       State = TestStates.Running;
-      var browser = new ChromiumWebBrowser
+      _browser = new ChromiumWebBrowser
       {
         Address = Path.GetFullPath( "Web//index.html" )
       };
       var browserLoaded = Observable.FromEventPattern<EventHandler<FrameLoadEndEventArgs>, FrameLoadEndEventArgs>(
-        h => browser.FrameLoadEnd += h, h => browser.FrameLoadEnd -= h );
-      Control.Content = browser;
+        h => _browser.FrameLoadEnd += h, h => _browser.FrameLoadEnd -= h );
+      Control.Content = _browser;
 
-      browserLoaded.Subscribe( async _ =>
+      _disposal = browserLoaded.Subscribe( async _ =>
       {
-        await Setup( browser );
-        await Tests( browser );
+        await Setup( _browser );
+        await Tests( _browser );
       } );
     }
 
@@ -79,8 +86,14 @@ namespace Leafnet.Wpf.Tests.MapTest.FullTest
 
     public override async Task<bool> Tests(IWebBrowser browser)
     {
-      var map = new Map( "map", browser, "map" );
+      Map map = new Map( "map", browser, "map" );
       await _leaflet.Map( map );
+      await _leaflet.Evaluate( "map.setView([51.505, -0.09], 13);" );
+
+      var url = @"https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpandmbXliNDBjZWd2M2x6bDk3c2ZtOTkifQ._QA7i5Mpkd_m30IGElHziw";
+      var tileOptions = new TileLayerOptions { id = "mapbox.streets" };
+      var tileLayer = new TileLayer( "mapboxTileLayer", browser, url, tileOptions );
+      await ( await _leaflet.TileLayer( tileLayer ) ).AddToMap( map );
       return true;
     }
   }
