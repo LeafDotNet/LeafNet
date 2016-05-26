@@ -1,37 +1,60 @@
-﻿using Newtonsoft.Json;
+﻿using System;
+using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using CefSharp;
+using Newtonsoft.Json;
 
 namespace Leafnet
 {
-  public class Map
+  public class Map : JsObject
   {
-    internal readonly string Js = JsVariableNamer.GetNext();
-    public Map(string divId, string options = "")
+    public Map(string jsName, IWebBrowser browser, string divId) :
+      base (jsName, browser)
     {
-      var script = $"var {Js} = L.map('{divId}')";
-      Script.ExecuteAsync(script);
+      DivId = divId;
     }
 
-    public Map SetView(LatLng center, int zoom = 8, ZoomPanOptions zoomPanOptions = null)
+    public async Task<Map> RemoveLayer( TileLayer layer)
     {
-      var centerJson = JsonConvert.SerializeObject(center);
-
-      var zoomPanOptionsJson = zoomPanOptions == null
-        ? "{}" : JsonConvert.SerializeObject(zoomPanOptions);
-
-      var script = $"{Js}.setView({centerJson}, {zoom}, {zoomPanOptionsJson})";
-      Script.ExecuteAsync(script);
+      var js = $"{JsName}.removeLayer({layer.JsName});";
+      await Evaluate( js );
       return this;
     }
 
-    public Map AddTileLayer(string url, TileLayerOptions tileLayerOptions = null)
+    public JsTask RemoveLayerJs( TileLayer layer )
     {
-      var tileLayerOptionsJson = tileLayerOptions == null
-        ? "{}" : JsonConvert.SerializeObject(tileLayerOptions);
+      var js = $"{JsName}.removeLayer({layer.JsName});";
+      return new JsTask( js, () => Browser.EvaluateScriptAsync( js) );
+    }
 
-      var script =
-        $@"L.tileLayer('{url}', {tileLayerOptionsJson}).addTo({Js});";
-      Script.ExecuteAsync(script);
+
+    public async Task<Map> RemoveLayerJsd( TileLayer layer )
+    {
+      await RemoveLayerJs( layer ).Run();
       return this;
+    }
+
+    public string DivId { get; }
+  }  
+
+  public class JsTask
+  {
+    public string Js { get; }
+
+    public JavascriptResponse Response { get; set; }
+    private readonly Func<Task<JavascriptResponse>> _runJs;
+
+    public JsTask( string js, Func<Task<JavascriptResponse>> response )
+    {
+      Js = js;
+      _runJs = response;
+    }
+
+    public async Task<JavascriptResponse> Run()
+    {
+      return Response = await _runJs.Invoke();
     }
   }
 }

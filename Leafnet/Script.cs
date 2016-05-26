@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using CefSharp;
+using Newtonsoft.Json;
 
 namespace Leafnet
 {
@@ -35,6 +37,24 @@ namespace Leafnet
         return default(T);
 
       return (T) response.Result;
+    }
+
+    public static async Task<string> EvaluateJavaScript( string s, IWebBrowser webBrowser )
+    {
+      try
+      {
+        var response = await webBrowser.EvaluateScriptAsync( s );
+        if ( response.Success && response.Result is IJavascriptCallback )
+        {
+          response = await ( (IJavascriptCallback)response.Result ).ExecuteAsync( "This is a callback from EvaluateJavaScript" );
+        }
+        return response.Success ? ( JsonConvert.SerializeObject( response.Result, Formatting.Indented ) ?? "null" ) : response.Message;
+      }
+      catch ( Exception e )
+      {
+        MessageBox.Show( "Error while evaluating Javascript: " + e.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error );
+      }
+      return "exception";
     }
   }
 }
